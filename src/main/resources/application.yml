@@ -1,0 +1,53 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  application:
+    name: mes-digital-platform
+
+  # 默认用 H2 文件库：clone 下来不装数据库也能跑，数据落在 ./data/mesdb
+  # 切 MySQL 时启动加 --spring.profiles.active=mysql
+  datasource:
+    url: jdbc:h2:file:./data/mesdb;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 3000
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+      continue-on-error: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jackson:
+    default-property-inclusion: non_null
+
+# ============ AI 能力 ============
+# 不配 key 也能跑：自动降级为「本地检索 + 拼接答案」，用于演示与离线自测
+app:
+  ai:
+    enabled: true
+    base-url: https://api.deepseek.com/v1
+    api-key: ${AI_API_KEY:}
+    model: deepseek-chat
+    timeout-seconds: 25
+    max-chunks: 4
+    max-chunk-chars: 700
+
+logging:
+  level:
+    com.cuijian.digital: INFO
+    org.springframework.jdbc.core: WARN

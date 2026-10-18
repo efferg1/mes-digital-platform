@@ -1,0 +1,21 @@
+# 构建产物
+target/
+*.jar
+*.war
+
+# 运行时数据（H2 文件库、日志）
+data/
+logs/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# 系统
+.DS_Store
+Thumbs.db
